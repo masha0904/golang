@@ -1,23 +1,18 @@
-// **Базовое использование интерфейса**
-//
-//	Определите интерфейс `Shape` с методом `Area() float64`. Реализуйте его для структур `Rectangle` и `Circle`.
+// ### Задача 7
+// **Условие:**
+// Создайте буферизованный канал на 2 значения типа `string`.
+// Запустите горутину, которая отправляет туда `"first"` и `"second"` **без блокировки**.
+// В `main` прочитайте оба значения и выведите их.
 package main
 
-import "math"
+import "fmt"
 
-type Shape interface {
-	Area() float64
-}
-type Circle struct {
-	Radius float64
-}
-type Rectangle struct {
-	Height float64
-}
-
-func (c Circle) Area() float64 {
-	return c.Radius * c.Radius * math.Pi
-}
-func (r Rectangle) Area() float64 {
-	return r.Height * r.Height
+func main() {
+	ch := make(chan string)
+	go func() {
+		ch <- "first"
+		ch <- "second"
+	}()
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
 }

@@ -1,29 +1,33 @@
-// **Интерфейсная совместимость**
-//
-//	 Создайте структуру `Square`, реализующую `Shape`.
-//	Передайте её в функцию, ожидающую `interface{}`. Проверьте, можно ли затем преобразовать её обратно к `Square`.
+// ### Задача 10
+// **Условие:**
+// Создайте программу, которая:
+// - Запускает 2 горутины.
+// - Первая отправляет в канал числа 1, 2, 3.
+// - Вторая читает из этого канала и выводит их.
+// - Используйте `sync.WaitGroup` или канал для синхронизации.
+// - Программа завершается корректно, без зависаний.
 package main
 
 import (
 	"fmt"
+	"sync"
 )
 
-type Square struct {
-	Side float64
-}
-
-func (s Square) Area() float64 {
-	return s.Side * s.Side
-}
-
-func Test(v interface{}) {
-	fmt.Printf("\nПроверка: %v\n", v)
-
-	if square, ok := v.(Square); ok {
-		fmt.Printf(" Это Square! Сторона: %.1f\n", square.Side)
-	}
-
-	if shape, ok := v.(Shape); ok {
-		fmt.Printf("Это Shape! Площадь: %.1f\n", shape.Area())
-	}
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(2)
+	ch := make(chan int)
+	go func() {
+		defer wg.Done()
+		ch <- 1
+		ch <- 2
+		ch <- 3
+	}()
+	go func() {
+		defer wg.Done()
+		fmt.Println(<-ch)
+		fmt.Println(<-ch)
+		fmt.Println(<-ch)
+	}()
+	wg.Wait()
 }

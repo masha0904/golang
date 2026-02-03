@@ -1,15 +1,22 @@
-// **Создание структуры**
-//
-//	Создайте структуру `Person` с полями `Name` и `Age`. Напишите метод `Greet()`, который выводит `"Hello, I'm <Name>"`.
+// ###  Задача 1
+// **Условие:**
+// Напишите программу, которая:
+// - Выводит `"Main started"`.
+// - Запускает горутину, которая выводит `"Goroutine finished"`.
+// - Выводит `"Main finished"`.
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
-type Person struct {
-	Name string
-	Age  int
-}
+func main() {
+	fmt.Println("Main started")
+	go func() {
+		fmt.Println("Goroutine finished")
+	}()
+	time.Sleep(100 * time.Millisecond)
+	fmt.Println("Main finished")
 
-func (p Person) Greet() {
-	fmt.Println("Hello, I am", p.Name)
 }

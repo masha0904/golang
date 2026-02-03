@@ -1,15 +1,21 @@
-// **Указатели vs значения**
-// Добавьте метод `Birthday()` к `Person`, увеличивающий возраст на 1. Реализуйте его дважды:
-// один раз с приёмником-значением, другой — с приёмником-указателем. Объясните разницу в поведении.
+// Задача 2
+// Условие:
+// Напишите функцию `greet(name string)`, которая выводит `"Hello, {name}!"`.
+// Запустите эту функцию как горутину с именем `"Alice"`.
+// Убедитесь, что сообщение выводится.
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
-func (p Person) Birthday() {
-	p.Age += 1
-	fmt.Println(p.Age)
+func greet(name string) {
+	fmt.Println("Hello,", name)
 }
-func (p *Person) Birthday2() {
-	p.Age += 1
-	fmt.Println(p.Age)
+
+func main() {
+	name := "Alice"
+	go greet(name)
+	time.Sleep(100 * time.Millisecond)
 }

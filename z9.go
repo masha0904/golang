@@ -1,20 +1,32 @@
-//  9. **Пустой интерфейс и type assertion**
-//     Напишите функцию `Describe(v interface{})`, которая определяет тип переданного значения
-//     (`int`, `string`, `Person`) и выводит соответствующее сообщение с использованием type switch.
-
+// ### Задача 9
+// **Условие:**
+// Горутина каждые 300 мс выводит `"Tick"`.
+// Остановите её через 1.5 секунды с помощью канала сигнала завершения (`done := make(chan bool)`).
+// После остановки выведите `"Stopped"`.
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
-func Describe(v interface{}) {
-	switch val := v.(type) {
-	case int:
-		fmt.Println("int:", val)
-	case string:
-		fmt.Println("string:", val)
-	case Person:
-		fmt.Println("Person:", val.Name, val.Age)
-	default:
-		fmt.Println("неизвестный тип")
-	}
+func main() {
+	done := make(chan bool)
+
+	go func() {
+		for {
+			select {
+			case <-done:
+				return
+			default:
+				fmt.Println("Tick")
+				time.Sleep(300 * time.Millisecond)
+			}
+		}
+	}()
+
+	time.Sleep(1500 * time.Millisecond)
+	done <- true
+	time.Sleep(100 * time.Millisecond)
+	fmt.Println("Stopped")
 }
