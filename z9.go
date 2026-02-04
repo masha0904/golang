@@ -11,22 +11,16 @@ import (
 )
 
 func main() {
-	done := make(chan bool)
-
+	stop := false
 	go func() {
-		for {
-			select {
-			case <-done:
-				return
-			default:
-				fmt.Println("Tick")
-				time.Sleep(300 * time.Millisecond)
-			}
+		for !stop {
+			fmt.Println("Tick")
+			time.Sleep(300 * time.Millisecond)
 		}
 	}()
 
 	time.Sleep(1500 * time.Millisecond)
-	done <- true
+	stop = true
 	time.Sleep(100 * time.Millisecond)
 	fmt.Println("Stopped")
 }
